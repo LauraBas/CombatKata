@@ -5,9 +5,9 @@ namespace App;
 
 
 class Character {
-    public  Int $health = 1000;
-    public  Int $level = 1;
-    public  $alive = true;
+    private  Int $health = 1000;
+    private  Int $level = 1;
+    private  $alive = true;
 
 	public function getCharacterHealth(){
         return $this->health;
