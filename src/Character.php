@@ -18,4 +18,11 @@ class Character {
     public function getAliveState(){
         return $this->alive;
     }
+    public function characterDamage($damage){
+        $this->health -= $damage;
+        if ($this->health < 1){
+            return $this->alive = false;
+        }
+        return $this->health;
+    }
 }
