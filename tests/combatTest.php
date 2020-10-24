@@ -84,6 +84,17 @@ class CombatKataTest extends TestCase {
 				//then
 				$this->assertEquals(1000, $character1->getHealth());
 			}
+		public function test_return_Character_can_only_heal_itself(
+			) {	
+				//given		
+				$character = new Character();
+				$opponent = new Character();
+				//when			
+				$character->attack($opponent, 100);
+				$opponent->heal(50);				
+				//then
+				$this->assertEquals(950, $opponent->getHealth());
+			}
 		
 
 
