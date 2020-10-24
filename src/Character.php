@@ -5,24 +5,36 @@ namespace App;
 
 
 class Character {
-    private  Int $health = 1000;
-    private  Int $level = 1;
-    private  $alive = true;
+    private  int $health = 1000;
+    private  int $level = 1;
 
-	public function getCharacterHealth(){
+    public function getHealth() :int
+    {
         return $this->health;
     }
-    public function getCharacterLevel(){
+    public function getLevel() :int
+    {
         return $this->level;
     }
-    public function getAliveState(){
-        return $this->alive;
+    public function isAlive() :bool
+    {
+        return $this->health > 0;
     }
-    public function characterDamage($damage){
-        $this->health -= $damage;
-        if ($this->health < 1){
-            return $this->alive = false;
+    public function damage($damage)
+    {
+        if($this->health > 0)
+        {
+            $this->health -= $damage;
         }
-        return $this->health;
+    }
+    public function heal($heal)
+    {   if ($this->isAlive())
+        {
+            $this->health += $heal;
+            if ($this->health > 1000)   
+            {
+                $this->health = 1000;
+            }                                                       
+        }
     }
 }
