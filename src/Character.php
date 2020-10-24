@@ -6,7 +6,7 @@ namespace App;
 
 class Character {
     public  int $health = 1000;
-    private  int $level = 1;
+    public  int $level = 1;
 
     public function getHealth() :int
     {
@@ -21,17 +21,23 @@ class Character {
         return $this->health > 0;
     }
     public function attack(Character $opponent, int $damage)
-    {
-        
+    {     
         if ($this !== $opponent) 
         {           
             if ($opponent->isAlive())
-            {                
-                $opponent->health -= $damage;
+            {   
+                if (($opponent->level - $this->level) >= 5)
+                {
+                    $opponent->health -= $damage/2;
+                }  
+                else
+                {
+                    $opponent->health -= $damage;
+                }        
             }
-
         }
     }
+
     public function heal(int $heal)
     {   if ($this->isAlive())
         {

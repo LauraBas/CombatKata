@@ -95,6 +95,17 @@ class CombatKataTest extends TestCase {
 				//then
 				$this->assertEquals(950, $opponent->getHealth());
 			}
+		public function test_return_damage_is_half_if_opponent_level_is_5_above(
+			) {	
+				//given		
+				$character = new Character();
+				$opponent = new Character();
+				$opponent->level = 6;
+				//when			
+				$character->attack($opponent, 200);							
+				//then
+				$this->assertEquals(900, $opponent->getHealth());
+			}
 		
 
 
