@@ -106,6 +106,17 @@ class CombatKataTest extends TestCase {
 				//then
 				$this->assertEquals(900, $opponent->getHealth());
 			}
+		public function test_return_damage_is_double_if_opponent_level_is_5_below(
+			) {	
+				//given		
+				$character = new Character();
+				$opponent = new Character();
+				$character->level = 6;
+				//when			
+				$character->attack($opponent, 100);							
+				//then
+				$this->assertEquals(800, $opponent->getHealth());
+			}
 		
 
 

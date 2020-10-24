@@ -30,16 +30,23 @@ class Character {
                 {
                     $opponent->health -= $damage/2;
                 }  
+                
+                else if (($this->level - $opponent->level) >= 5)
+                {
+                    $opponent->health -= $damage*2;
+                }  
                 else
                 {
-                    $opponent->health -= $damage;
-                }        
+                    $opponent->health -= $damage;                    
+                }                                
+                                  
             }
         }
     }
 
     public function heal(int $heal)
-    {   if ($this->isAlive())
+    {   
+        if ($this->isAlive())
         {
             $this->health += $heal;
             if ($this->health > 1000)   
