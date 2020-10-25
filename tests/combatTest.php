@@ -100,7 +100,7 @@ class CombatKataTest extends TestCase {
 				//given		
 				$character = Character::createMelee();
 				$opponent = Character::createMelee();
-				$opponent->level = 6;
+				$opponent->setLevel(6);
 				//when			
 				$character->attack($opponent, 200, 1);							
 				//then
@@ -111,7 +111,7 @@ class CombatKataTest extends TestCase {
 				//given		
 				$character = Character::createMelee();
 				$opponent = Character::createMelee();
-				$character->level = 6;
+				$character->setLevel(6);
 				//when			
 				$character->attack($opponent, 100, 1);							
 				//then

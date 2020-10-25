@@ -4,7 +4,7 @@ namespace App;
 
 class Character {
     private int $health = 1000;
-    public  int $level = 1;
+    private  int $level = 1;
     private int $maxRange;
 
     public static function createMelee() {
@@ -22,6 +22,11 @@ class Character {
     public function getHealth() :int
     {
         return $this->health;
+    }
+
+    public function setLevel(int $level)
+    {
+        $this->level = $level;
     }
     
     public function getLevel() :int
