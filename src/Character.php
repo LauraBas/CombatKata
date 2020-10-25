@@ -4,8 +4,9 @@ namespace App;
 
 class Character {
     private int $health = 1000;
-    private  int $level = 1;
+    private int $level = 1;
     private int $maxRange;
+    private array $factions = array();
 
     public static function createMelee() {
         return new Character(2);
@@ -86,5 +87,15 @@ class Character {
     public function getMaxRange() :int
     {
         return $this->maxRange;
+    }
+
+    public function joinFaction(string $factionName)
+    {
+        array_push($this->factions, $factionName); 
+       
+    }
+    public function getFaction() :array
+    {
+        return $this->factions;
     }
 }

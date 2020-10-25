@@ -145,6 +145,15 @@ class CombatKataTest extends TestCase {
 				//then
 				$this->assertEquals(1000, $opponent->getHealth());
 			}
+			public function test_return_character_faction(
+				) {	
+					//given		
+					$character = Character::createRanged();
+					//when			
+					$character->joinFaction('red');													
+					//then
+					$this->assertEquals(['red'], $character->getFaction());
+				}
 		
 
 
