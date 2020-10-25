@@ -8,6 +8,10 @@ class Character {
     public  int $health = 1000;
     public  int $level = 1;
 
+    function __construct(string $typeOfFighter) {
+        $this->typeOfFighter = $typeOfFighter;
+      }
+
     public function getHealth() :int
     {
         return $this->health;
@@ -54,5 +58,18 @@ class Character {
                 $this->health = 1000;
             }                                                       
         }
+    }
+    public function getMaxRange() :int
+    {
+        if($this->typeOfFighter == 'Melee')
+        {
+            $this->attackMaxRange = 2;
+        }
+        else 
+        {
+            $this->attackMaxRange = 20;
+        }
+        return $this->attackMaxRange;
+
     }
 }
