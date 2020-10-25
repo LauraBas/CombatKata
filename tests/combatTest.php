@@ -33,7 +33,7 @@ class CombatKataTest extends TestCase {
 			$character = new Character('Melee');
 			$opponent = new Character('Melee');
 
-			$character->attack($opponent, 100);
+			$character->attack($opponent, 100, 2);
 	
 			$this->assertEquals(900, $opponent->getHealth());
 		}
@@ -41,7 +41,7 @@ class CombatKataTest extends TestCase {
 		) {
 			$character = new Character('Melee');
 			$opponent = new Character('Melee');
-			$character->attack($opponent, 1001);
+			$character->attack($opponent, 1001, 1);
 	
 			$this->assertEquals($opponent->isAlive(), false);
 		}
@@ -50,7 +50,7 @@ class CombatKataTest extends TestCase {
 			) {
 				$character = new Character('Melee');
 				$opponent = new Character('Melee');
-				$character->attack($opponent ,100);
+				$character->attack($opponent ,100, 1);
 				$opponent->heal(50);
 				$this->assertEquals($opponent->getHealth(), 950);
 			}	
@@ -58,7 +58,7 @@ class CombatKataTest extends TestCase {
 			) {			
 				$character = new Character('Melee');
 				$opponent = new Character('Melee');
-				$character->attack($opponent, 1000);			
+				$character->attack($opponent, 1000, 1);			
 				$opponent->heal(100);
 				
 				$this->assertEquals($opponent->isAlive(), false);
@@ -70,7 +70,7 @@ class CombatKataTest extends TestCase {
 				$character = new Character('Melee');
 				$opponent = new Character('Melee');
 				//when			
-				$character->attack($opponent, 100);
+				$character->attack($opponent, 100, 1);
 				$opponent->heal(150);			
 				//then
 				$this->assertEquals($opponent->getHealth(), 1000);
@@ -80,7 +80,7 @@ class CombatKataTest extends TestCase {
 				//given		
 				$character1 = new Character('Melee');
 				//when			
-				$character1->attack($character1, 100);				
+				$character1->attack($character1, 100, 1);				
 				//then
 				$this->assertEquals(1000, $character1->getHealth());
 			}
@@ -90,7 +90,7 @@ class CombatKataTest extends TestCase {
 				$character = new Character('Melee');
 				$opponent = new Character('Melee');
 				//when			
-				$character->attack($opponent, 100);
+				$character->attack($opponent, 100, 1);
 				$opponent->heal(50);				
 				//then
 				$this->assertEquals(950, $opponent->getHealth());
@@ -102,7 +102,7 @@ class CombatKataTest extends TestCase {
 				$opponent = new Character('Melee');
 				$opponent->level = 6;
 				//when			
-				$character->attack($opponent, 200);							
+				$character->attack($opponent, 200, 1);							
 				//then
 				$this->assertEquals(900, $opponent->getHealth());
 			}
@@ -113,7 +113,7 @@ class CombatKataTest extends TestCase {
 				$opponent = new Character('Melee');
 				$character->level = 6;
 				//when			
-				$character->attack($opponent, 100);							
+				$character->attack($opponent, 100, 1);							
 				//then
 				$this->assertEquals(800, $opponent->getHealth());
 			}
@@ -134,6 +134,16 @@ class CombatKataTest extends TestCase {
 				$character->getMaxRange();											
 				//then
 				$this->assertEquals(20, $character->getMaxRange());
+			}
+		public function test_return_character_Must_Be_in_Range_to_dammage(
+			) {	
+				//given		
+				$character = new Character('Ranged');
+				$opponent = new Character('Melee');
+				//when			
+				$character->attack($opponent, 100, 30);											
+				//then
+				$this->assertEquals(1000, $opponent->getHealth());
 			}
 		
 

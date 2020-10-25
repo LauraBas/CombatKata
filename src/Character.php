@@ -24,30 +24,47 @@ class Character {
     {
         return $this->health > 0;
     }
-    public function attack(Character $opponent, int $damage)
+    public function isRanged() :bool
+    {
+       $this->typeOfFighter == 'Ranged';
+    }
+    public function isMelee() :bool
+    {
+       $this->typeOfFighter == 'Melee';
+    }
+    
+    
+    public function attack(Character $opponent, int $damage, int $distance)
     {     
         if ($this !== $opponent) 
-        {           
-            if ($opponent->isAlive())
-            {   
-                if (($opponent->level - $this->level) >= 5)
-                {
-                    $opponent->health -= $damage/2;
-                }  
-                
-                else if (($this->level - $opponent->level) >= 5)
-                {
-                    $opponent->health -= $damage*2;
-                }  
-                else
-                {
-                    $opponent->health -= $damage;                    
-                }                                
-                                  
+        {  
+            if ($this->isInRangeToAttack($distance)) 
+            {    
+                if ($opponent->isAlive())
+                {   
+                    if (($opponent->level - $this->level) >= 5)
+                    {
+                        $opponent->health -= $damage/2;
+                    }  
+                    
+                    else if (($this->level - $opponent->level) >= 5)
+                    {
+                        $opponent->health -= $damage*2;
+                    }  
+                    else
+                    {
+                        $opponent->health -= $damage;                    
+                    }                                
+                    
+                }
             }
         }
     }
-
+    public function isInRangeToAttack($distance)
+    {
+       return $distance <= $this->getMaxRange();
+    }
+    
     public function heal(int $heal)
     {   
         if ($this->isAlive())
