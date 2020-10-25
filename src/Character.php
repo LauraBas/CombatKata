@@ -2,37 +2,37 @@
 
 namespace App;
 
-
-
 class Character {
-    public  int $health = 1000;
+    private int $health = 1000;
     public  int $level = 1;
+    private int $maxRange;
 
-    function __construct(string $typeOfFighter) {
-        $this->typeOfFighter = $typeOfFighter;
-      }
+    public static function createMelee() {
+        return new Character(2);
+    }
+
+    public static function createRanged() {
+        return new Character(20);
+    }
+
+    private function __construct(int $maxRange) {
+        $this->maxRange = $maxRange;
+    }
 
     public function getHealth() :int
     {
         return $this->health;
     }
+    
     public function getLevel() :int
     {
         return $this->level;
     }
+
     public function isAlive() :bool
     {
         return $this->health > 0;
     }
-    public function isRanged() :bool
-    {
-       $this->typeOfFighter == 'Ranged';
-    }
-    public function isMelee() :bool
-    {
-       $this->typeOfFighter == 'Melee';
-    }
-    
     
     public function attack(Character $opponent, int $damage, int $distance)
     {     
@@ -60,6 +60,7 @@ class Character {
             }
         }
     }
+
     public function isInRangeToAttack($distance)
     {
        return $distance <= $this->getMaxRange();
@@ -76,17 +77,9 @@ class Character {
             }                                                       
         }
     }
+
     public function getMaxRange() :int
     {
-        if($this->typeOfFighter == 'Melee')
-        {
-            $this->attackMaxRange = 2;
-        }
-        else 
-        {
-            $this->attackMaxRange = 20;
-        }
-        return $this->attackMaxRange;
-
+        return $this->maxRange;
     }
 }
