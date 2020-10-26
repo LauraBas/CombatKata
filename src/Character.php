@@ -40,13 +40,13 @@ class Character {
         return $this->health > 0;
     }
     
-    public function attack(Character $other, int $damage, int $distance)
+    public function attackCharacter(Character $other , int $damage, int $distance)
     {     
         if ($this !== $other) 
         {  
             if ($this->isAlly($other) == false)
             {                
-                if ($this->isInRangeToAttack($distance)) 
+                if ($this->isInRangeToattackCharacter($distance)) 
                 {    
                     if ($other->isAlive())
                     {   
@@ -70,7 +70,7 @@ class Character {
         }
     }
 
-    public function isInRangeToAttack($distance)
+    public function isInRangeToattackCharacter($distance)
     {
        return $distance <= $this->getMaxRange();
     }
@@ -121,6 +121,11 @@ class Character {
     {
         return count(array_intersect($this->getFaction(), $other->getFaction())) > 0;
         
+    }
+
+    public function attackProp(Prop $prop, int $damage) 
+    {
+        $prop->health -= $damage;
     }
 
 

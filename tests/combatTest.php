@@ -4,6 +4,7 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use App\Character;
+use App\Prop;
 
 class CombatKataTest extends TestCase {
 
@@ -34,7 +35,7 @@ class CombatKataTest extends TestCase {
 			$character->joinFaction('blue');
 			$opponent = Character::createMelee();
 			$opponent->joinFaction('red');			
-			$character->attack($opponent, 100, 1);
+			$character->attackCharacter($opponent, 100, 1);
 			
 	
 			$this->assertEquals(900, $opponent->getHealth());			
@@ -44,7 +45,7 @@ class CombatKataTest extends TestCase {
 			) {
 				$character = Character::createMelee();				
 				$opponent = Character::createMelee();
-				$character->attack($opponent, 1001, 1);
+				$character->attackCharacter($opponent, 1001, 1);
 				
 		
 				$this->assertEquals(false, $opponent->isAlive());
@@ -58,7 +59,7 @@ class CombatKataTest extends TestCase {
 				$opponent->joinFaction('blue');
 				$other = Character::createRanged();
 				$other->joinFaction('blue');
-				$character->attack($opponent ,100, 1);
+				$character->attackCharacter($opponent ,100, 1);
 				$other->heal($opponent, 50);
 				$this->assertEquals($opponent->getHealth(), 950);
 			}	
@@ -69,7 +70,7 @@ class CombatKataTest extends TestCase {
 				$other = Character::createRanged();
 				$opponent->joinFaction('blue');
 				$other->joinFaction('blue');
-				$character->attack($opponent, 1000, 1);			
+				$character->attackCharacter($opponent, 1000, 1);			
 				$other->heal($opponent, 150);
 				
 				$this->assertEquals($opponent->isAlive(), false);
@@ -84,7 +85,7 @@ class CombatKataTest extends TestCase {
 				$opponent->joinFaction('blue');
 				$other->joinFaction('blue');
 				//when			
-				$character->attack($opponent, 100, 1);
+				$character->attackCharacter($opponent, 100, 1);
 				$other->heal($opponent, 150);			
 				//then
 				$this->assertEquals($opponent->getHealth(), 1000);
@@ -94,7 +95,7 @@ class CombatKataTest extends TestCase {
 				//given		
 				$character1 = Character::createMelee();
 				//when			
-				$character1->attack($character1, 100, 1);				
+				$character1->attackCharacter($character1, 100, 1);				
 				//then
 				$this->assertEquals(1000, $character1->getHealth());
 			}
@@ -104,7 +105,7 @@ class CombatKataTest extends TestCase {
 				$character = Character::createMelee();
 				$opponent = Character::createMelee();
 				//when			
-				$character->attack($opponent, 100, 1);
+				$character->attackCharacter($opponent, 100, 1);
 				$opponent->heal($opponent, 50);				
 				//then
 				$this->assertEquals(950, $opponent->getHealth());
@@ -116,7 +117,7 @@ class CombatKataTest extends TestCase {
 				$opponent = Character::createMelee();
 				$opponent->setLevel(6);
 				//when			
-				$character->attack($opponent, 200, 1);							
+				$character->attackCharacter($opponent, 200, 1);							
 				//then
 				$this->assertEquals(900, $opponent->getHealth());
 			}
@@ -127,11 +128,11 @@ class CombatKataTest extends TestCase {
 				$opponent = Character::createMelee();
 				$character->setLevel(6);
 				//when			
-				$character->attack($opponent, 100, 1);							
+				$character->attackCharacter($opponent, 100, 1);							
 				//then
 				$this->assertEquals(800, $opponent->getHealth());
 			}
-		public function test_return_character_Melee_have_attack_Max_Range_2(
+		public function test_return_character_Melee_have_attackCharacter_Max_Range_2(
 			) {	
 				//given		
 				$character = Character::createMelee();
@@ -140,7 +141,7 @@ class CombatKataTest extends TestCase {
 				//then
 				$this->assertEquals(2, $character->getMaxRange());
 			}
-		public function test_return_character_Ranged_have_attack_Max_Range_20(
+		public function test_return_character_Ranged_have_attackCharacter_Max_Range_20(
 			) {	
 				//given		
 				$character = Character::createRanged();
@@ -155,7 +156,7 @@ class CombatKataTest extends TestCase {
 				$character = Character::createRanged();
 				$opponent = Character::createMelee();
 				//when			
-				$character->attack($opponent, 100, 30);											
+				$character->attackCharacter($opponent, 100, 30);											
 				//then
 				$this->assertEquals(1000, $opponent->getHealth());
 			}
@@ -191,7 +192,7 @@ class CombatKataTest extends TestCase {
 						//then
 						$this->assertEquals(true, $character->isAlly($character2));
 					}
-				public function test_return_characters_allies_cannot_attack(
+				public function test_return_characters_allies_cannot_attackCharacter(
 					) {	
 						//given		
 						$character = Character::createRanged();
@@ -199,7 +200,7 @@ class CombatKataTest extends TestCase {
 						$opponent = Character::createMelee();	
 						$opponent->joinFaction('red');																	
 						//when	
-						$character->attack($opponent, 100, 1);
+						$character->attackCharacter($opponent, 100, 1);
 								
 						//then
 						$this->assertEquals(1000, $opponent->getHealth());
@@ -214,12 +215,32 @@ class CombatKataTest extends TestCase {
 						$other = Character::createMelee();	
 						$other->joinFaction('red');																	
 						//when	
-						$opponent->attack($character, 100, 1);
-						$other->heal($character, 50);
-								
+						$opponent->attackCharacter($character, 100, 1);
+						$other->heal($character, 50);				
 						//then
 						$this->assertEquals(950, $character->getHealth());
 					}
+
+					public function test_return_health_after_attackCharacter_a_prop(
+					) {
+						//given
+						$character = Character::createRanged();
+						$tree =  new Prop(100);
+						//when
+						$character->attackProp($tree, 50);
+						//then
+						$this->assertEquals(50, $tree->getHealth());
+					}
+					public function test_return_destroyed_prop_after_health_0(
+						) {
+							//given
+							$character = Character::createRanged();
+							$tree =  new Prop(100);
+							//when
+							$character->attackProp($tree, 100);
+							//then
+							$this->assertEquals(true, $tree->isDestroyed());
+						}
 		
 
 
