@@ -165,6 +165,18 @@ class CombatKataTest extends TestCase {
 					//then
 					$this->assertEquals(['red'], $character->getFaction());
 				}
+				public function test_return_characters_is_allies_when_same_faction(
+					) {	
+						//given		
+						$character = Character::createRanged();
+						$character->joinFaction('red');							
+						$character2 = Character::createMelee();	
+						$character->joinFaction('red');																	
+						//when	
+						$character->isAllie($character2);		
+						//then
+						$this->assertEquals(true, $character->isAllie($character2));
+					}
 		
 
 

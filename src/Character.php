@@ -104,10 +104,18 @@ class Character {
             }
         }
        
-    }
-    
+    }    
     public function getFaction() :array
     {
         return $this->factions;
     }
+
+    public function isAllie($character2) :bool
+    {
+        return array_intersect($this->factions,$character2->getFaction()) > 0;
+        
+    }
+
+
+
 }
