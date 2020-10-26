@@ -31,35 +31,46 @@ class CombatKataTest extends TestCase {
 		public function test_return_Character_Health_After_Damage(
 		) {
 			$character = Character::createMelee();
+			$character->joinFaction('blue');
 			$opponent = Character::createMelee();
-
-			$character->attack($opponent, 100, 2);
+			$opponent->joinFaction('red');			
+			$character->attack($opponent, 100, 1);
+			
 	
-			$this->assertEquals(900, $opponent->getHealth());
+			$this->assertEquals(900, $opponent->getHealth());			
 		}
+
 		public function test_return_Character_Alive_False_After_Damage(
 			) {
-				$character = Character::createMelee();
+				$character = Character::createMelee();				
 				$opponent = Character::createMelee();
 				$character->attack($opponent, 1001, 1);
+				
 		
-				$this->assertEquals($opponent->isAlive(), false);
+				$this->assertEquals(false, $opponent->isAlive());
 			}
 	
 		public function test_return_Character_Can_Heal_Character(
 			) {
 				$character = Character::createMelee();
+				$character->joinFaction('red');
 				$opponent = Character::createMelee();
+				$opponent->joinFaction('blue');
+				$other = Character::createRanged();
+				$other->joinFaction('blue');
 				$character->attack($opponent ,100, 1);
-				$opponent->heal(50);
+				$other->heal($opponent, 50);
 				$this->assertEquals($opponent->getHealth(), 950);
 			}	
 		public function test_return_Character_State_if_is_dead(
 			) {			
 				$character = Character::createMelee();
 				$opponent = Character::createMelee();
+				$other = Character::createRanged();
+				$opponent->joinFaction('blue');
+				$other->joinFaction('blue');
 				$character->attack($opponent, 1000, 1);			
-				$opponent->heal(100);
+				$other->heal($opponent, 150);
 				
 				$this->assertEquals($opponent->isAlive(), false);
 				$this->assertEquals($opponent->getHealth(), 0);
@@ -69,9 +80,12 @@ class CombatKataTest extends TestCase {
 				//given		
 				$character = Character::createMelee();
 				$opponent = Character::createMelee();
+				$other = Character::createRanged();
+				$opponent->joinFaction('blue');
+				$other->joinFaction('blue');
 				//when			
 				$character->attack($opponent, 100, 1);
-				$opponent->heal(150);			
+				$other->heal($opponent, 150);			
 				//then
 				$this->assertEquals($opponent->getHealth(), 1000);
 			}
@@ -91,7 +105,7 @@ class CombatKataTest extends TestCase {
 				$opponent = Character::createMelee();
 				//when			
 				$character->attack($opponent, 100, 1);
-				$opponent->heal(50);				
+				$opponent->heal($opponent, 50);				
 				//then
 				$this->assertEquals(950, $opponent->getHealth());
 			}
@@ -171,11 +185,40 @@ class CombatKataTest extends TestCase {
 						$character = Character::createRanged();
 						$character->joinFaction('red');							
 						$character2 = Character::createMelee();	
-						$character->joinFaction('red');																	
+						$character2->joinFaction('red');																	
 						//when	
-						$character->isAllie($character2);		
+						$character->isAlly($character2);		
 						//then
-						$this->assertEquals(true, $character->isAllie($character2));
+						$this->assertEquals(true, $character->isAlly($character2));
+					}
+				public function test_return_characters_allies_cannot_attack(
+					) {	
+						//given		
+						$character = Character::createRanged();
+						$character->joinFaction('red');							
+						$opponent = Character::createMelee();	
+						$opponent->joinFaction('red');																	
+						//when	
+						$character->attack($opponent, 100, 1);
+								
+						//then
+						$this->assertEquals(1000, $opponent->getHealth());
+					}
+				public function test_return_allies_can_heal_another(
+					) {	
+						//given
+						$opponent = Character::createRanged();
+						$opponent->joinFaction('blue');
+						$character = Character::createRanged();
+						$character->joinFaction('red');							
+						$other = Character::createMelee();	
+						$other->joinFaction('red');																	
+						//when	
+						$opponent->attack($character, 100, 1);
+						$other->heal($character, 50);
+								
+						//then
+						$this->assertEquals(950, $character->getHealth());
 					}
 		
 

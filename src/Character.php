@@ -40,28 +40,31 @@ class Character {
         return $this->health > 0;
     }
     
-    public function attack(Character $opponent, int $damage, int $distance)
+    public function attack(Character $other, int $damage, int $distance)
     {     
-        if ($this !== $opponent) 
+        if ($this !== $other) 
         {  
-            if ($this->isInRangeToAttack($distance)) 
-            {    
-                if ($opponent->isAlive())
-                {   
-                    if (($opponent->level - $this->level) >= 5)
-                    {
-                        $opponent->health -= $damage/2;
-                    }  
-                    
-                    else if (($this->level - $opponent->level) >= 5)
-                    {
-                        $opponent->health -= $damage*2;
-                    }  
-                    else
-                    {
-                        $opponent->health -= $damage;                    
-                    }                                
-                    
+            if ($this->isAlly($other) == false)
+            {                
+                if ($this->isInRangeToAttack($distance)) 
+                {    
+                    if ($other->isAlive())
+                    {   
+                        if (($other->level - $this->level) >= 5)
+                        {
+                            $other->health -= $damage/2;
+                        }  
+                        
+                        else if (($this->level - $other->level) >= 5)
+                        {
+                            $other->health -= $damage*2;
+                        }  
+                        else
+                        {
+                            $other->health -= $damage;                    
+                        }                                
+                        
+                    }
                 }
             }
         }
@@ -72,15 +75,19 @@ class Character {
        return $distance <= $this->getMaxRange();
     }
     
-    public function heal(int $heal)
+    public function heal(Character $other, int $heal)
     {   
-        if ($this->isAlive())
+        if ($other->isAlive())
         {
-            $this->health += $heal;
-            if ($this->health > 1000)   
+            if ($this->isAlly($other) || $this === $other)
             {
-                $this->health = 1000;
-            }                                                       
+                $other->health += $heal;
+                if ($other->health > 1000)   
+                {
+                    $other->health = 1000;
+                }     
+            }
+                                                              
         }
     }
 
@@ -110,11 +117,12 @@ class Character {
         return $this->factions;
     }
 
-    public function isAllie($character2) :bool
+    public function isAlly($other) :bool
     {
-        return array_intersect($this->factions,$character2->getFaction()) > 0;
+        return count(array_intersect($this->getFaction(), $other->getFaction())) > 0;
         
     }
+
 
 
 
