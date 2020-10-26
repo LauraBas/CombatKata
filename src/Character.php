@@ -6,7 +6,7 @@ class Character {
     private int $health = 1000;
     private int $level = 1;
     private int $maxRange;
-    private array $factions = array();
+    private array $factions = [];
 
     public static function createMelee() {
         return new Character(2);
@@ -94,6 +94,18 @@ class Character {
         array_push($this->factions, $factionName); 
        
     }
+    public function leaveFaction(string $factionName)
+    {
+        for($i = 0; $i < count($this->factions); $i++)
+        {
+            if ($factionName === $this->factions[$i])
+            {
+                array_splice($this->factions, $i, 1);
+            }
+        }
+       
+    }
+    
     public function getFaction() :array
     {
         return $this->factions;

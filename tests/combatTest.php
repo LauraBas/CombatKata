@@ -154,6 +154,17 @@ class CombatKataTest extends TestCase {
 					//then
 					$this->assertEquals(['red'], $character->getFaction());
 				}
+			public function test_return_character_leave_faction(
+				) {	
+					//given		
+					$character = Character::createRanged();
+					$character->joinFaction('red');
+					$character->joinFaction('blue');													
+					//when	
+					$character->leaveFaction('blue');		
+					//then
+					$this->assertEquals(['red'], $character->getFaction());
+				}
 		
 
 
