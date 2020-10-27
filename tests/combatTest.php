@@ -224,9 +224,8 @@ class CombatKataTest extends TestCase {
 		) {
 			
 			$character = Character::createRanged();
-			$tree =  new Prop();
-			$tree->setHealth(100);
-			
+			$tree =  new Prop(100);
+						
 			$character->attackProp($tree, 50);
 			
 			$this->assertEquals(50, $tree->getHealth());
@@ -235,9 +234,8 @@ class CombatKataTest extends TestCase {
 		) {
 			
 			$character = Character::createRanged();
-			$tree =  new Prop();
-			$tree->setHealth(100);
-			
+			$tree =  new Prop(100);
+						
 			$character->attackProp($tree, 100);
 			
 			$this->assertEquals(true, $tree->isDestroyed());
