@@ -49,38 +49,45 @@ class Character {
     }
     
     public function attackCharacter(Character $other , int $damage, int $distance) 
-    {     
-        if ($this !== $other) 
-        {  
-            if ($this->isAlly($other) == false)
-            {                
-                if ($this->isInRangeToattackCharacter($distance)) 
-                {    
-                    if ($other->isAlive())
-                    {   
-                        if (($other->level - $this->level) >= self::TARGET_LEVEL)
-                        {
-                            $other->health -= $damage/2;
-                        }  
-                        
-                        else if (($this->level - $other->level) >= self::TARGET_LEVEL)
-                        {
-                            $other->health -= $damage*2;
-                        }  
-                        else
-                        {
-                            $other->health -= $damage;                    
-                        }                                
-                        
-                    }
-                }
-            }
+    {             
+        if($this->canAttack($other, $distance))
+        {                                                          
+            if ($this->isLevelTargetAbove($other))
+            {
+                $other->health -= $damage/2;
+            }                          
+            else if ($this->isLevelTargetBelow($other))
+            {
+                $other->health -= $damage*2;
+            }  
+            else
+            {
+                $other->health -= $damage;                    
+            }                                                                                        
         }
+        
+    }
+
+    public function canAttack($other, $distance)
+    {
+        return ($this !== $other && !$this->isAlly($other) 
+                && $other->isAlive() 
+                && $this->isInRangeToattackCharacter($distance));
     }
 
     public function isInRangeToattackCharacter($distance)
     {
        return $distance <= $this->getMaxRange();
+    }
+
+    public function isLevelTargetAbove($other)
+    {
+         return ($other->level - $this->level) >= self::TARGET_LEVEL;
+    }
+
+    public function isLevelTargetBelow($other)
+    {
+        return ($this->level - $other->level) >= self::TARGET_LEVEL;
     }
     
     public function heal(Character $other, int $heal)
