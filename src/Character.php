@@ -50,8 +50,8 @@ class Character {
     
     public function attackCharacter(Character $other , int $damage, int $distance) 
     {             
-        if($this->canAttack($other, $distance))
-        {                                                          
+        if ($this->canAttack($other, $distance))
+        {                                                                          
             if ($this->isLevelTargetAbove($other))
             {
                 $other->health -= $damage/2;
@@ -66,43 +66,44 @@ class Character {
             }                                                                                        
         }
         
-    }
-
-    public function canAttack($other, $distance)
+    }   
+    
+    public function canAttack(Character $other, int $distance) :bool
     {
         return ($this !== $other && !$this->isAlly($other) 
                 && $other->isAlive() 
                 && $this->isInRangeToattackCharacter($distance));
     }
 
-    public function isInRangeToattackCharacter($distance)
+    public function isInRangeToattackCharacter(int $distance) :bool
     {
        return $distance <= $this->getMaxRange();
     }
 
-    public function isLevelTargetAbove($other)
+    public function isLevelTargetAbove(Character $other) :bool
     {
          return ($other->level - $this->level) >= self::TARGET_LEVEL;
     }
 
-    public function isLevelTargetBelow($other)
+    public function isLevelTargetBelow(Character $other) :bool
     {
         return ($this->level - $other->level) >= self::TARGET_LEVEL;
     }
+
+    public function canHeal(Character $other) :bool
+    {
+        return ($other->isAlive() && ($this === $other || $this->isAlly($other)));
+    }
     
-    public function heal(Character $other, int $heal)
+    public function heal(Character $other, int $heal) 
     {   
-        if ($other->isAlive())
-        {
-            if ($this->isAlly($other) || $this === $other)
+        if ($this->canHeal($other))
+        {            
+            $other->health += $heal;
+            if ($other->health > self::MAX_HEALTH)   
             {
-                $other->health += $heal;
-                if ($other->health > self::MAX_HEALTH)   
-                {
-                    $other->health = self::MAX_HEALTH;
-                }     
-            }
-                                                              
+                $other->health = self::MAX_HEALTH;
+            }                                                                  
         }
     }
 
