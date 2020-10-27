@@ -51,22 +51,42 @@ class Character {
     public function attackCharacter(Character $other , int $damage, int $distance) 
     {             
         if ($this->canAttack($other, $distance))
-        {                                                                          
-            if ($this->isLevelTargetAbove($other))
-            {
-                $other->health -= $damage/2;
-            }                          
-            else if ($this->isLevelTargetBelow($other))
-            {
-                $other->health -= $damage*2;
-            }  
-            else
-            {
-                $other->health -= $damage;                    
-            }                                                                                        
+        {    
+            $this->attack($other, $damage);                                                                                                                                                                    
         }
         
-    }   
+    }  
+
+    public function attack($other, $damage)
+    {
+        if ($this->isModifiedAttack($other))
+        {
+            $this->calculateDamage($other, $damage);
+        }
+        else
+        {
+            $other->health -= $damage;                    
+        }      
+    } 
+
+    public function isModifiedAttack($other)
+    {
+        return ($this->isLevelTargetAbove($other) || $this->isLevelTargetBelow($other));
+    }
+
+    public function calculateDamage($other, $damage)
+    {
+        if ($this->isLevelTargetAbove($other))
+            {
+                $other->health -= $damage/2;
+            } 
+
+        if ($this->isLevelTargetBelow($other))
+            {
+                $other->health -= $damage*2;
+            }
+    }
+
     
     public function canAttack(Character $other, int $distance) :bool
     {
