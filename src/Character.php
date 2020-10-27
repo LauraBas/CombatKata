@@ -125,6 +125,6 @@ class Character {
 
     public function attackProp(Prop $prop, int $damage) 
     {
-        $prop->health -= $damage;
+        $prop->damage($damage);
     }
 }

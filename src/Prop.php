@@ -3,9 +3,9 @@
 namespace App;
 
 class Prop {
-    public int $health;
+    private int $health;
 
-    public function setHealth(int $health)
+    public function __construct(int $health) 
     {
         $this->health = $health;
     }
@@ -13,6 +13,11 @@ class Prop {
     public function getHealth() :int
     {
         return $this->health;
+    }
+
+    public function damage(int $damage) :int
+    {
+         return $this->health -= $damage;
     }
 
     public function isDestroyed() :bool
