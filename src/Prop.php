@@ -5,7 +5,8 @@ namespace App;
 class Prop {
     public int $health;
 
-    public function __construct(int $health) {
+    public function setHealth(int $health)
+    {
         $this->health = $health;
     }
 
@@ -18,8 +19,6 @@ class Prop {
     {
         return $this->health <= 0;
     }
-
-
 
 }
 
