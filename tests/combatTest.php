@@ -59,8 +59,10 @@ class CombatKataTest extends TestCase {
 			$opponent->joinFaction('blue');
 			$other = Character::createRanged();
 			$other->joinFaction('blue');
+
 			$character->attackCharacter($opponent ,100, 1);
 			$other->heal($opponent, 50);
+
 			$this->assertEquals($opponent->getHealth(), 950);
 		}	
 	public function test_return_Character_State_if_is_dead(
@@ -70,7 +72,9 @@ class CombatKataTest extends TestCase {
 			$other = Character::createRanged();
 			$opponent->joinFaction('blue');
 			$other->joinFaction('blue');
-			$character->attackCharacter($opponent, 1000, 1);			
+
+			$character->attackCharacter($opponent, 1000, 1);
+						
 			$other->heal($opponent, 150);
 			
 			$this->assertEquals($opponent->isAlive(), false);

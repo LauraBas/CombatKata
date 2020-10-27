@@ -4,6 +4,7 @@ namespace App;
 
 class Prop {
     private int $health;
+    const MIN_HEALTH = 0;
 
     public function __construct(int $health) 
     {
@@ -22,7 +23,7 @@ class Prop {
 
     public function isDestroyed() :bool
     {
-        return $this->health <= 0;
+        return $this->health <= self::MIN_HEALTH;
     }
 
 }

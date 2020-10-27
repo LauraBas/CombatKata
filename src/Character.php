@@ -7,16 +7,24 @@ class Character {
     private int $level = 1;
     private int $maxRange;
     private array $factions = [];
+    const MAX_HEALTH = 1000;
+    const MIN_HEALTH = 0;
+    const RANGE_MELEE_FIGHT = 2;
+    const RANGE_RANGED_FIGHT = 20;
+    const TARGET_LEVEL = 5;
 
-    public static function createMelee() {
-        return new Character(2);
+    public static function createMelee() 
+    {
+        return new Character(self::RANGE_MELEE_FIGHT);
     }
 
-    public static function createRanged() {
-        return new Character(20);
+    public static function createRanged() 
+    {
+        return new Character(self::RANGE_RANGED_FIGHT);
     }
 
-    private function __construct(int $maxRange) {
+    private function __construct(int $maxRange) 
+    {
         $this->maxRange = $maxRange;
     }
 
@@ -25,7 +33,7 @@ class Character {
         return $this->health;
     }
 
-    public function setLevel(int $level)
+    public function setLevel(int $level) 
     {
         $this->level = $level;
     }
@@ -37,10 +45,10 @@ class Character {
 
     public function isAlive() :bool
     {
-        return $this->health > 0;
+        return $this->health > self::MIN_HEALTH;
     }
     
-    public function attackCharacter(Character $other , int $damage, int $distance)
+    public function attackCharacter(Character $other , int $damage, int $distance) 
     {     
         if ($this !== $other) 
         {  
@@ -50,12 +58,12 @@ class Character {
                 {    
                     if ($other->isAlive())
                     {   
-                        if (($other->level - $this->level) >= 5)
+                        if (($other->level - $this->level) >= self::TARGET_LEVEL)
                         {
                             $other->health -= $damage/2;
                         }  
                         
-                        else if (($this->level - $other->level) >= 5)
+                        else if (($this->level - $other->level) >= self::TARGET_LEVEL)
                         {
                             $other->health -= $damage*2;
                         }  
@@ -82,9 +90,9 @@ class Character {
             if ($this->isAlly($other) || $this === $other)
             {
                 $other->health += $heal;
-                if ($other->health > 1000)   
+                if ($other->health > self::MAX_HEALTH)   
                 {
-                    $other->health = 1000;
+                    $other->health = self::MAX_HEALTH;
                 }     
             }
                                                               
