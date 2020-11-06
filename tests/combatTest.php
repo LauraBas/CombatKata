@@ -3,8 +3,8 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use App\Character;
-use App\Prop;
+use App\Models\Character;
+use App\Models\Prop;
 
 class CombatKataTest extends TestCase {
 

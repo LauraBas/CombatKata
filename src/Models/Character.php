@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-class Character {
+class Character  {
     private int $health = 1000;
     private int $level = 1;
     private int $maxRange;
@@ -86,7 +86,6 @@ class Character {
                 $other->health -= $damage*2;
             }
     }
-
     
     public function canAttack(Character $other, int $distance) :bool
     {
